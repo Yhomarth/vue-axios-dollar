@@ -1,18 +1,39 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+<div>
+    <v-row>
+      <v-col  xs="12">
+        <v-card>
+          <v-date-picker 
+            v-model="fecha"
+            color="info"
+            full-width
+            ></v-date-picker>
+        </v-card>
+        <v-card color="error" dark>
+          <v-card-text class="display-1 text-center">
+            Hola - {{fecha}}
+          </v-card-text>
+        </v-card>
+      </v-col>
+  
+  </v-row>
+
+
+</div>
+
+  
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+
 
 export default {
-  name: 'home',
-  components: {
-    HelloWorld
+  name: 'home', 
+  data: () => {
+    return {
+      fecha : ''
+    }
   }
+  
 }
 </script>
