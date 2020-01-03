@@ -9,13 +9,14 @@
             full-width
             :min="fechaMinima"
             :max="fechaMaxima"
+            @change="getDollar(fecha)"
              
             
             ></v-date-picker>
         </v-card>
         <v-card color="error" dark>
           <v-card-text class="display-1 text-center">
-            Hola - {{fecha}}  
+            {{valor}} 
           </v-card-text>
         </v-card>
       </v-col>
@@ -31,14 +32,52 @@
 <script>
 
 
+import {mapMutations} from 'vuex'
+import axios from 'axios'
+import moment from 'moment'
+
+
 export default {
   name: 'home', 
   data: () => {
     return {
-      fecha : '', 
+      fecha : moment().format("YYYY-MM-DD"), 
       fechaMinima : '2017',
-      fechaMaxima : new Date().toISOString().substring(0,10)
+      fechaMaxima : moment().format("YYYY-MM-DD"),
+      valor : ''
     }
+  }, 
+
+  methods: {
+
+    ...mapMutations(['mostrarLoading', 'ocultarLoading']),
+   
+   async getDollar(dia){
+     
+    
+    let fechaArray = dia.split('-')
+    let fechaFormat = fechaArray[2] + "-" + fechaArray[1] + "-" + fechaArray[0]     
+
+     try {  
+       this.mostrarLoading({titulo : 'cargando la informacion', color : 'secondary'})
+        let datos = await axios.get(`https://mindicador.cl/api/dolar/${fechaFormat}`);
+        this.valor =  await datos.data.serie[0].valor;       
+     } catch (error) {
+     this.valor =  'Sin resultados';       
+     }
+     finally{
+
+       this.ocultarLoading()
+
+     }
+ 
+   }
+   
+  },
+
+  created() {
+ 
+    this.getDollar(this.fecha)
   }
   
 }
