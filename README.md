@@ -1,4 +1,4 @@
-# axios-dolar
+# axios-dollar
 
 ## Project setup
 ```
